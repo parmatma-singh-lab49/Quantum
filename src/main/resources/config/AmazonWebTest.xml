@@ -1,0 +1,40 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Amazon Web Test Suite" verbose="0" parallel="tests">
+    <listeners>
+        <listener class-name="com.quantum.listeners.QuantumReportiumListener"/>
+    </listeners>
+
+    <!-- To use actual AppiumDriver classes defined    -->
+    <!-- by driverClass property in env.resources dirs -->
+    <!-- Set driver.name value to perfectoDriver       -->
+    <parameter name="driver.name" value="perfectoDriver"/>
+
+    <test name="Amazon Scenario iOS Test" enabled="true">
+        <parameter name="driver.capabilities.model" value="iPhone.*"></parameter>
+        <parameter name="perfecto.additional.capabilities" value="{'openDeviceTimeout':5}" />
+        <parameter name="perfecto.capabilities.browserName" value="Safari"></parameter>
+        <parameter name="env.resources" value="src/main/resources/ios"/>
+        <groups>
+            <run>
+                <include name="@WebTest1" />
+            </run>
+        </groups>
+        <classes>
+            <class
+                    name="com.qmetry.qaf.automation.step.client.gherkin.GherkinScenarioFactory" />
+        </classes>
+    </test>
+    <test name="Amazon Scenario Android Test" enabled="true">
+        <parameter name="driver.capabilities.model" value="Galaxy.*"></parameter>
+        <parameter name="perfecto.capabilities.browserName" value="Chrome"></parameter>
+        <parameter name="env.resources" value="src/main/resources/android"/>
+        <groups>
+            <run>
+                <include name="@WebTest1"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.qmetry.qaf.automation.step.client.gherkin.GherkinScenarioFactory"/>
+        </classes>
+    </test>
+</suite>

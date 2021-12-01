@@ -1,0 +1,6 @@
+calculator.value=xpath=//*[@label="%s"]
+calculator.result=xpath=//*[@label="Result"]
+
+amazon.web.search.box=xpath=//*[@id="nav-search-keywords"]
+amazon.web.search.button=xpath=//*[@class="nav-input"]
+amazon.web.search.results=xpath=//*[text()="%s"]
