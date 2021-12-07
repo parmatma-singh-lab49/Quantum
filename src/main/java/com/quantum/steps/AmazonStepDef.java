@@ -8,6 +8,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java.tr.Ama;
 
 @QAFTestStepProvider
 public class AmazonStepDef {
@@ -44,6 +45,26 @@ public class AmazonStepDef {
     @And("^user verifies \"(.*?)\" product is displayed on web$")
     public void verifyWebSearchResult(String product){
         new AmazonPage().verifyWebSearchResult(product);
+    }
+
+    @And("^user clicks \"(.*?)\" product$")
+    public void clickOnProduct(String productname){
+        new AmazonPage().clickOnProduct(productname);
+    }
+
+    @And("^user enters \"(.*?)\" value as pincode$")
+    public void enterPinCode(String pin){
+        new AmazonPage().enterPincode(pin);
+    }
+
+    @And("^user clicks on \"(.*?)\" button$")
+    public void clickBtn(String btnValue) throws Exception {
+        new AmazonPage().clickElement(btnValue);
+    }
+
+    @And("^user validates the total cart value \"(.*?)\"$")
+    public void validateText(String value){
+        new AmazonPage().validateText(value);
     }
 }
 

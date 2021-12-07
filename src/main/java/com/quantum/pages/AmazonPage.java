@@ -10,11 +10,17 @@ import com.qmetry.qaf.automation.ui.webdriver.QAFExtendedWebDriver;
 import com.qmetry.qaf.automation.ui.webdriver.QAFExtendedWebElement;
 import com.qmetry.qaf.automation.util.PropertyUtil;
 import com.quantum.utils.DriverUtils;
+import cucumber.api.java.en.And;
+import io.appium.java_client.MobileBy;
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import net.bytebuddy.asm.Advice;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.touch.TouchActions;
 import org.testng.Assert;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +45,9 @@ public class AmazonPage extends WebDriverBaseTestPage<WebDriverTestPage> {
     private QAFExtendedWebElement webSearchBox;
     @FindBy(locator = "amazon.web.search.button")
     private QAFExtendedWebElement webSearchButton;
+    @FindBy(locator = "amazon.cart.subtotal.value")
+    private QAFExtendedWebElement cartSubtotalValue;
+
 
 
 
@@ -82,5 +91,62 @@ public class AmazonPage extends WebDriverBaseTestPage<WebDriverTestPage> {
         QAFExtendedWebElement product = new QAFExtendedWebElement(String.format(props.getString("amazon.web.search.results"), productName));
         Assert.assertTrue(product.isDisplayed());
     }
+
+    public void selectPincodeOption(String pincodeOption){
+        QAFExtendedWebElement product = new QAFExtendedWebElement(String.format(props.getString("amazon.pincode.option.button"), pincodeOption));
+        product.click();
+    }
+
+    public void clickOnProduct(String productname){
+        QAFExtendedWebElement product = new QAFExtendedWebElement(String.format(props.getString("amazon.search.results"), productname));
+        product.click();
+    }
+
+    public void enterPincode(String pinvalue){
+        QAFExtendedWebElement pin = new QAFExtendedWebElement(String.format(props.getString("amazon.pincode.textbox"), pinvalue));
+        //pin.click();
+        pin.sendKeys(pinvalue);
+        Map<String,Object> key= new HashMap<String,Object>();
+        key.put("key","66");
+        driver.executeScript("mobile:key:event",key);
+    }
+
+    public void clickElement(String elementText) throws Exception {
+        boolean flag = true;
+        int maxCheck = 5;
+        while(flag){
+            try {
+                Map<String, Object> params = new HashMap<>();
+                params.put("content",elementText);
+                String result = (String)DriverUtils.getDriver().executeScript("mobile:text:find",params);
+                if(result.equals("true")){
+                    flag = false;
+                    break;
+                }
+                else throw new Exception();
+            }
+            catch (Exception NoSuchElementException){
+                maxCheck--;
+                Map<String, Object> params = new HashMap<>();
+                params.put("start", "40%,60%");
+                params.put("end", "40%,20%");
+                params.put("duration", "2");
+                Object res = DriverUtils.getDriver().executeScript("mobile:touch:swipe", params);
+                if(maxCheck==0){
+                    break;
+                }
+            }
+        }
+        QAFExtendedWebElement btn = new QAFExtendedWebElement(String.format(props.getString("amazon.button"), elementText));
+        btn.click();
+    }
+
+    public void validateText(String value){
+        String stValue = cartSubtotalValue.getText();
+        if (!stValue.contains(value)){
+            Assert.fail("Subtotal does not matches the expected value");
+        }
+    }
+
 }
 
