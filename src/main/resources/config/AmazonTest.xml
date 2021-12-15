@@ -31,7 +31,7 @@
         <parameter name="env.resources" value="src/main/resources/android"/>
         <groups>
             <run>
-                <include name="@AndroidTest2"/>
+                <include name="@AndroidTest3"/>
             </run>
         </groups>
         <classes>

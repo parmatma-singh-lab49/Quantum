@@ -47,9 +47,12 @@ public class AmazonPage extends WebDriverBaseTestPage<WebDriverTestPage> {
     private QAFExtendedWebElement webSearchButton;
     @FindBy(locator = "amazon.cart.subtotal.value")
     private QAFExtendedWebElement cartSubtotalValue;
-
-
-
+    @FindBy(locator = "amazon.icon.search")
+    private QAFExtendedWebElement searchIcon;
+    @FindBy(locator = "amazon.nav.next")
+    private QAFExtendedWebElement nextBtn;
+    @FindBy(locator = "amazon.icon.cart")
+    private QAFExtendedWebElement cartIcon;
 
 
     PropertyUtil props = ConfigurationManager.getBundle();
@@ -97,7 +100,7 @@ public class AmazonPage extends WebDriverBaseTestPage<WebDriverTestPage> {
         product.click();
     }
 
-    public void clickOnProduct(String productname){
+    public void clickElement(String productname){
         QAFExtendedWebElement product = new QAFExtendedWebElement(String.format(props.getString("amazon.search.results"), productname));
         product.click();
     }
@@ -111,7 +114,7 @@ public class AmazonPage extends WebDriverBaseTestPage<WebDriverTestPage> {
         driver.executeScript("mobile:key:event",key);
     }
 
-    public void clickElement(String elementText) throws Exception {
+    /*public void clickElement(String elementText) throws Exception {
         boolean flag = true;
         int maxCheck = 5;
         while(flag){
@@ -139,14 +142,54 @@ public class AmazonPage extends WebDriverBaseTestPage<WebDriverTestPage> {
         }
         QAFExtendedWebElement btn = new QAFExtendedWebElement(String.format(props.getString("amazon.button"), elementText));
         btn.click();
-    }
+    }*/
 
     public void validateText(String value){
         String stValue = cartSubtotalValue.getText();
         if (!stValue.contains(value)){
-            Assert.fail("Subtotal does not matches the expected value");
+            Assert.fail("Subtotal does not matches the expected value : " + stValue);
         }
     }
 
-}
+    public void clickSearchIcon(){
+        searchIcon.click();
+    }
 
+    public void clickCartIcon(){
+        cartIcon.click();
+    }
+
+    public void clickOnProduct(String elementText) throws Exception {
+        boolean flag = true;
+        while (flag) {
+            try {
+                Map<String, Object> params = new HashMap<>();
+                params.put("content", elementText);
+                String result = (String) DriverUtils.getDriver().executeScript("mobile:text:find", params);
+                if (result.equals("true")) {
+                    flag = false;
+                    break;
+                } else throw new Exception();
+            } catch (Exception NoSuchElementException) {
+
+                //check for next button
+                try{
+                    if (nextBtn.isDisplayed()) {
+                        if (nextBtn.isEnabled()) {
+                            nextBtn.click();
+                        }
+                    }
+                }
+                catch(Exception e) {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("start", "40%,60%");
+                        params.put("end", "40%,20%");
+                        params.put("duration", "2");
+                        Object res = DriverUtils.getDriver().executeScript("mobile:touch:swipe", params);
+                    }
+                }
+            }
+            QAFExtendedWebElement btn = new QAFExtendedWebElement(String.format(props.getString("amazon.button"), elementText));
+            btn.click();
+        }
+}

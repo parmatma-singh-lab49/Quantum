@@ -48,7 +48,12 @@ public class AmazonStepDef {
     }
 
     @And("^user clicks \"(.*?)\" product$")
-    public void clickOnProduct(String productname){
+    public void clickOnProduct(String productname) throws Exception {
+        new AmazonPage().clickOnProduct(productname);
+    }
+
+    @And("^user clicks \"(.*?)\" option$")
+    public void clickOnProductDetails(String productname) throws Exception {
         new AmazonPage().clickOnProduct(productname);
     }
 
@@ -65,6 +70,16 @@ public class AmazonStepDef {
     @And("^user validates the total cart value \"(.*?)\"$")
     public void validateText(String value){
         new AmazonPage().validateText(value);
+    }
+
+    @And("^user clicks on search icon$")
+    public void clickSearchIcon(){
+        new AmazonPage().clickSearchIcon();
+    }
+
+    @And("^user clicks on cart icon$")
+    public void clickcartIcon(){
+        new AmazonPage().clickCartIcon();
     }
 }
 
