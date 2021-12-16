@@ -9,7 +9,7 @@
     <!-- Set driver.name value to perfectoDriver       -->
     <parameter name="driver.name" value="perfectoDriver"/>
 
-   <!-- <test name="Amazon Test" enabled="true">
+   <test name="Amazon Test" enabled="true">
         <parameter name="driver.capabilities.model" value="Galaxy.*"></parameter>
         <parameter name="driver.capabilities.app" value="PUBLIC:amazonApp.apk"></parameter>
         <parameter name="driver.capabilities.appPackage" value="in.amazon.mShop.android.shopping"/>
@@ -22,7 +22,7 @@
         <classes>
             <class name="com.qmetry.qaf.automation.step.client.gherkin.GherkinScenarioFactory"/>
         </classes>
-    </test>-->
+    </test>
 
     <test name="Amazon Test - E2E flow" enabled="true">
         <parameter name="driver.capabilities.model" value="Galaxy.*"></parameter>
